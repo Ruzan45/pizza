@@ -1,19 +1,41 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-function PizzaBlock({title, price, imageUrl, sizes, types}) {
-  const [activeSize,setSize] = React.useState(0);
-  const [activeType,setType] = React.useState(0);
-  const typeNames = ['тонкое', 'традиционное', 'домашнее'] // решение Арчакова. Статичный массив имеет точно такие же индексы, какие нам присылаются в массиве types
+import { addItem } from '../../redux/slises/cartSlice';
+
+const typeNames = ['тонкое', 'традиционное', 'домашнее']; // решение Арчакова. Статичный массив имеет точно такие же индексы, какие нам присылаются в массиве types
+
+
+export default function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
+  const dispatch = useDispatch();
+  const cartCount = useSelector(state => state.cart.items.filter(function (obj) { return obj.id === id })).reduce((sum, obj) => {
+    return obj.count + sum;
+  }, 0); // 0 это начальное значение sum ;
+
+
+  const [activeSize, setIndexSize] = React.useState(0);
+  const [activeType, setType] = React.useState(0);
+  const onClickAdd = () => {
+    const item = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: typeNames[activeType],
+      size: sizes[activeSize],
+    }
+
+    dispatch(addItem(item));
+  };
 
   return (
     <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza"/>
+      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
       <h4 className="pizza-block__title">{title}</h4>
       <div className="pizza-block__selector">
         <ul>
           {types.map((typeNum, i) => (
-            <li key={i}
-            onClick={() => setType(i)} className={activeType === i ? 'active' : ''}>
+            <li key={i} onClick={() => setType(i)} className={activeType === i ? 'active' : ''}>
               {typeNames[typeNum]}
               {/* {typeNum === 0 && 'тонкое'}
               {typeNum === 1 && 'традиционное'}
@@ -23,20 +45,15 @@ function PizzaBlock({title, price, imageUrl, sizes, types}) {
         </ul>
         <ul>
           {sizes.map((val, i) => (
-            <li key={i}
-              onClick={() => setSize(i)}
-              className={activeSize === i
-              ? 'active'
-              : ''}>{val}
-              см.</li>
+            <li key={i} onClick={() => setIndexSize(i)} className={activeSize === i ? 'active' : ''}>{val} см.</li>
           ))
-}
+          }
         </ul>
       </div>
       <div className="pizza-block__bottom">
         <div className="pizza-block__price">от {price}
           ₽</div>
-        <button className="button button--outline button--add">
+        <button onClick={onClickAdd} className="button button--outline button--add">
           <svg
             width="12"
             height="12"
@@ -45,13 +62,12 @@ function PizzaBlock({title, price, imageUrl, sizes, types}) {
             xmlns="http://www.w3.org/2000/svg">
             <path
               d="M10.8 4.8H7.2V1.2C7.2 0.5373 6.6627 0 6 0C5.3373 0 4.8 0.5373 4.8 1.2V4.8H1.2C0.5373 4.8 0 5.3373 0 6C0 6.6627 0.5373 7.2 1.2 7.2H4.8V10.8C4.8 11.4627 5.3373 12 6 12C6.6627 12 7.2 11.4627 7.2 10.8V7.2H10.8C11.4627 7.2 12 6.6627 12 6C12 5.3373 11.4627 4.8 10.8 4.8Z"
-              fill="white"/>
+              fill="white" />
           </svg>
           <span>Добавить</span>
-          <i>1</i>
+          {cartCount > 0 && <i>{cartCount}</i>} {/* если больше нуля, то выводим количество данного товара в корзине */}
         </button>
       </div>
     </div>
   )
-}
-export default PizzaBlock;
+};

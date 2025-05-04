@@ -1,5 +1,6 @@
-import React, { createContext } from 'react';
+import React from 'react';
 import { Routes, Route } from "react-router";
+
 import './scss/app.scss';
 
 import Header from './components/Header';
@@ -9,19 +10,14 @@ import NotFound from './components/NotFoundBlock';
 
 export const SearchContext = React.createContext();
 
-
-
-
-/* import pizzas from './assets/pizzas.json';
- */
-
-
 export default function App() {
   const [searchValue, setSearchValue] = React.useState('');
+
 
   return (
     <SearchContext.Provider value={{ searchValue, setSearchValue }}>
       <div className="wrapper">
+
         <Header />
         <div className="content">
 

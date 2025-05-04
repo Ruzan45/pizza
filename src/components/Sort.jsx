@@ -1,31 +1,54 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSort } from '../redux/slises/filterSlice.js'//redux
 
-
-function Sort({ onClickSort, sortName }) {
+const sortList = [
+  {
+    name: 'популярности',
+    sortValue: 'raiting',
+    order: 'desc'
+  }, {
+    name: 'цене-убыванию',
+    sortValue: 'price',
+    order: 'desc'
+  },
+  {
+    name: 'цене-возрастанию',
+    sortValue: 'price',
+    order: 'asc'
+  }, {
+    name: 'алфавиту',
+    sortValue: 'title',
+    order: 'asc'
+  }
+]
+export function Sort() {
+  const dispach = useDispatch();
+  const sort = useSelector(state => state.filterSlice.sort);
+  const sortRef = React.useRef(); //аналог this в JQ
   const [opened,
     setOpened] = React.useState(false);
-  const sorts = [
-    {
-      name: 'популярности',
-      sortProperty: 'raiting'
-    }, {
-      name: 'цене-убыванию',
-      sortProperty: '-price'
-    },
-    {
-      name: 'цене-возрастанию',
-      sortProperty: 'price'
-    }, {
-      name: 'алфавиту',
-      sortProperty: 'title'
-    }
-  ]
-  const ClickSort = (i) => {
-    onClickSort(i);
+
+  const ClickSort = (obj) => {
+    dispach(setSort(obj)) //передаём в редакс объект
     setOpened(false); //закрываем окно сортироваки при выборе сортировки
   }
+
+  React.useEffect(() => { //закрываем окошко при  клике вне него
+    const handleClickOutside = (event) => {
+      let path = event.composedPath ? event.composedPath() : event.path;
+      if (!path.includes(sortRef.current)) {
+        setOpened(false);
+      }
+    }
+    document.body.addEventListener('click', handleClickOutside);
+    return () => { //для useEffect return выполняет действие внутри себя при unMount
+      document.body.removeEventListener('click', handleClickOutside);// удаляем функцию handleClickOutside при закрытии окна Sort
+    }
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">{/* sortRef ссылка на объект */}
       <div className="sort__label">
         <svg
           width="10"
@@ -38,16 +61,16 @@ function Sort({ onClickSort, sortName }) {
             fill="#2C2C2C" />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpened(!opened)}>{sortName.name}</span>
+        <span onClick={() => setOpened(!opened)}>{sort.name}</span>
       </div>
 
       {opened && (
         <div className="sort__popup">
           <ul>
-            {sorts.map((obj, i) => (
+            {sortList.map((obj, i) => (
               <li
                 key={i}
-                className={sortName.name === obj.name
+                className={sort.name === obj.name
                   ? 'active'
                   : ''}
                 onClick={() => (ClickSort(obj))}>{obj.name}</li>
@@ -60,5 +83,3 @@ function Sort({ onClickSort, sortName }) {
     </div>
   );
 }
-
-export default Sort;
