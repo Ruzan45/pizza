@@ -47,7 +47,6 @@ const cartSlice = createSlice({
         },
 
         removeItem(state, action) {
-            console.log(action.payload)
             const indexRemove = state.items.findIndex(item => item.ids == action.payload);
             state.items.splice(indexRemove, 1);
             updSummPriceCart(state);
