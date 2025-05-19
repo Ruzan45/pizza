@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react';
 import debounce from 'lodash.debounce'; //большая библиотека с множеством функций, именно этот метод аналог setTimeOut
-import { SearchContext } from '../../App';
+//import { SearchContext } from '../../App';
+import { useDispatch } from 'react-redux';//redux
+import { setSearchData } from '../../redux/slises/filterSlice';
 
 import styles from './Search.module.scss';
 
 export default function Search() {
+    const dispatch = useDispatch();
     const [value, setValueSearchInput] = React.useState(''); //делаем чтобы не считывалась пустая строка через Х время
 
-    const { setSearchValue } = React.useContext(SearchContext);
+    //const { setSearchValue } = React.useContext(SearchContext);
     const inputRef = React.useRef(); //подобие this в JQ
 
     const onClickClear = () => {
-        setSearchValue('');
+        dispatch(setSearchData(''));
         setValueSearchInput('');
         inputRef.current.focus();//подобие this в JQ
     };
 
     const updateSearchValue = React.useCallback(
         debounce((str) => { //
-            setSearchValue(str);
+            dispatch(setSearchData(str));
         }, 800),
         [],
     )

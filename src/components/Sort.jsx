@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort } from '../redux/slises/filterSlice.js'//redux
+import { setSort, selectSort } from '../redux/slises/filterSlice.js'//redux
 
 const sortList = [
   {
@@ -24,7 +24,7 @@ const sortList = [
 ]
 export function Sort() {
   const dispach = useDispatch();
-  const sort = useSelector(state => state.filterSlice.sort);
+  const sort = useSelector(selectSort);
   const sortRef = React.useRef(); //аналог this в JQ
   const [opened,
     setOpened] = React.useState(false);

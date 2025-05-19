@@ -3,32 +3,24 @@ import { Routes, Route } from "react-router";
 
 import './scss/app.scss';
 
-import Header from './components/Header';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
+import FullPizza from './pages/FullPizza';
 import NotFound from './components/NotFoundBlock';
-
-export const SearchContext = React.createContext();
+import MainLayout from './components/layouts/MainLayout';
 
 export default function App() {
-  const [searchValue, setSearchValue] = React.useState('');
-
 
   return (
-    <SearchContext.Provider value={{ searchValue, setSearchValue }}>
-      <div className="wrapper">
-
-        <Header />
-        <div className="content">
-
-          <Routes>
-            <Route path="/" element={<Home searchValue={searchValue} />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
-      </div>
-    </SearchContext.Provider>
+    //<SearchContext.Provider value={{ searchValue, setSearchValue }}>
+    <Routes>
+      <Route path='/' element={<MainLayout />} >
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/pizza/:pizzaId" element={<FullPizza />} />{/* через : указывается параметр для useParams, который будет приниматься из адресной строки*/}
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
 
 
 

@@ -2,19 +2,17 @@ import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus',
-    async (params) => {
-        const {
-            items,
-            categoryId,
-            sort,
-            currentPage,
-            searchValue,
-        } = params;
+    async (params, thunkAPI) => {
+        const filterSlice = thunkAPI.getState().filterSlice; //getState() может получить данные напрямую из Редакса
+        /* const { //принимаем что-то похожее на пропсы из Home
+        } = params; */
         const { data } = await axios.get(
-            'https://662215b527fcd16fa6c8b4f9.mockapi.io/reactpizza?page=' + currentPage + '&limit=5' + (categoryId > 0 ? `&category=${categoryId}` : '')
-            + '&sortBy=' + sort.sortValue + '&order=' + sort.order + (searchValue ? `&search=${searchValue}` : '')
+            'https://662215b527fcd16fa6c8b4f9.mockapi.io/reactpizza?page=' + filterSlice.currentPage + '&limit=5' + (filterSlice.categoryId > 0 ? `&category=${filterSlice.categoryId}` : '')
+            + '&sortBy=' + filterSlice.sort.sortValue + '&order=' + filterSlice.sort.order + (filterSlice.searchData ? `&search=${filterSlice.searchData}` : '')
         );
+
         return data;
+
     },
 )
 
