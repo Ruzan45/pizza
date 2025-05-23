@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { ReactHTMLElement } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router';
 import { useNavigate } from 'react-router-dom';
 
-export default function FullPizza() {
+const FullPizza: React.FC = () => {
 
-    const [item, setItem] = React.useState();
+    const [item, setItem] = React.useState<{ imageUrl: string; title: string; }>();
     const { pizzaId } = useParams();
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export default function FullPizza() {
         fetchItem();
     }, []);
 
-    if (!item) {
+    if (!item) { //если === undefined
         return 'Загрузка...';
     }
 
@@ -36,3 +36,4 @@ export default function FullPizza() {
         </div>
     )
 }
+export default FullPizza;

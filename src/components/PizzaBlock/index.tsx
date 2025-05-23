@@ -2,19 +2,28 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { addItem } from '../../redux/slises/cartSlice';
+import { Link } from 'react-router';
 
 const typeNames = ['тонкое', 'традиционное', 'домашнее']; // решение Арчакова. Статичный массив имеет точно такие же индексы, какие нам присылаются в массиве types
 
+type PizzaBlockProps = {
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+  id: string;
+};
 
-export default function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
+const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, types, id }) => {
   const dispatch = useDispatch();
-  const cartCount = useSelector(state => state.cart.items.filter(function (obj) { return obj.id === id })).reduce((sum, obj) => {
+  const cartCount = useSelector((state: any) => state.cart.items.filter(function (obj: any) { return obj.id === id })).reduce((sum: number, obj: any) => {
     return obj.count + sum;
   }, 0); // 0 это начальное значение sum ;
 
 
-  const [activeSize, setIndexSize] = React.useState(0);
-  const [activeType, setType] = React.useState(0);
+  const [activeSize, setIndexSize] = React.useState<number>(0);
+  const [activeType, setType] = React.useState<number>(0);
   const onClickAdd = () => {
     const item = {
       id,
@@ -30,8 +39,8 @@ export default function PizzaBlock({ title, price, imageUrl, sizes, types, id })
 
   return (
     <div className="pizza-block">
-      <img className="pizza-block__image" src={imageUrl} alt="Pizza" />
-      <h4 className="pizza-block__title">{title}</h4>
+      <Link to={`/pizza/${id}`}><img className="pizza-block__image" src={imageUrl} alt="Pizza" />
+        <h4 className="pizza-block__title">{title}</h4></Link>
       <div className="pizza-block__selector">
         <ul>
           {types.map((typeNum, i) => (
@@ -71,3 +80,5 @@ export default function PizzaBlock({ title, price, imageUrl, sizes, types, id })
     </div>
   )
 };
+
+export default PizzaBlock;

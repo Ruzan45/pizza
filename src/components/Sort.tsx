@@ -2,7 +2,14 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSort, selectSort } from '../redux/slises/filterSlice.js'//redux
 
-const sortList = [
+
+
+type sortItem = { //объект типов для TS
+  name: string;
+  sortValue: string;
+  order: string;
+};
+const sortList: sortItem[] = [ // [] - указываем что это массив объектов
   {
     name: 'популярности',
     sortValue: 'raiting',
@@ -25,19 +32,19 @@ const sortList = [
 export function Sort() {
   const dispach = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef(); //аналог this в JQ
+  const sortRef = React.useRef<HTMLDivElement>(null); //аналог this в JQ//null для TS
   const [opened,
     setOpened] = React.useState(false);
 
-  const ClickSort = (obj) => {
+  const ClickSort = (obj: sortItem) => {
     dispach(setSort(obj)) //передаём в редакс объект
     setOpened(false); //закрываем окно сортироваки при выборе сортировки
   }
 
   React.useEffect(() => { //закрываем окошко при  клике вне него
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: any) => {
       let path = event.composedPath ? event.composedPath() : event.path;
-      if (!path.includes(sortRef.current)) {
+      if (!path.includes(sortRef.current)) { //если в event не содержится тот div тогда закрывавем окошко
         setOpened(false);
       }
     }
@@ -48,7 +55,7 @@ export function Sort() {
   }, []);
 
   return (
-    <div ref={sortRef} className="sort">{/* sortRef ссылка на объект */}
+    <div ref={sortRef} className="sort">{/* sortRef ссылка на div */}
       <div className="sort__label">
         <svg
           width="10"

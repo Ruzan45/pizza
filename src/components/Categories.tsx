@@ -3,9 +3,13 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';//redux
 import { setCategoryId } from '../redux/slises/filterSlice.js'//redux
 
+type CategoriesPrors = { //типизируем пропсы
+  value: number;
+  onChangeCategory: any;
+};
 
-function Categories() {
-  const categoryId = useSelector((state) => state.filterSlice.categoryId);
+const Categories: React.FC/* <CategoriesPrors> */ = (/* {value, onChangeCategory}*/) => {
+  const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
   const dispach = useDispatch();
   const categories = [
     'Все',
@@ -15,7 +19,7 @@ function Categories() {
     'Острые',
     'Закрытые'
   ];
-  const onClickCategory = (id) => {
+  const onClickCategory = (id: number) => {
     dispach(setCategoryId(id))
   };
 

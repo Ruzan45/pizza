@@ -6,17 +6,17 @@ import { setSearchData } from '../../redux/slises/filterSlice';
 
 import styles from './Search.module.scss';
 
-export default function Search() {
+const Search: React.FC = () => {
     const dispatch = useDispatch();
     const [value, setValueSearchInput] = React.useState(''); //делаем чтобы не считывалась пустая строка через Х время
 
     //const { setSearchValue } = React.useContext(SearchContext);
-    const inputRef = React.useRef(); //подобие this в JQ
+    const inputRef = React.useRef<HTMLInputElement>(null); //подобие this в JQ
 
     const onClickClear = () => {
         dispatch(setSearchData(''));
         setValueSearchInput('');
-        inputRef.current.focus();//подобие this в JQ
+        inputRef.current?.focus();// ?. оператор опциональной последовательности. Проверяем если что-то в current
     };
 
     const updateSearchValue = React.useCallback(
@@ -26,7 +26,7 @@ export default function Search() {
         [],
     )
 
-    const onChangeInput = event => {
+    const onChangeInput = (event: any) => {
         setValueSearchInput(event.target.value);
         updateSearchValue(event.target.value)
     }
@@ -64,3 +64,4 @@ export default function Search() {
         </div>
     );
 };
+export default Search;

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Routes, Route } from "react-router";
 
 import './scss/app.scss';
@@ -6,10 +5,10 @@ import './scss/app.scss';
 import Home from './pages/Home';
 import Cart from './pages/Cart';
 import FullPizza from './pages/FullPizza';
-import NotFound from './components/NotFoundBlock';
+import NotFound from './components/NotFoundBlock/index';
 import MainLayout from './components/layouts/MainLayout';
 
-export default function App() {
+const App: React.FC = () => {
 
   return (
     //<SearchContext.Provider value={{ searchValue, setSearchValue }}>
@@ -26,3 +25,4 @@ export default function App() {
 
   );
 }
+export default App;

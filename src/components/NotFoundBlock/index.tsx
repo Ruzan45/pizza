@@ -2,10 +2,11 @@ import React from 'react'
 
 import styles from './NotFoundBlock.module.scss'
 
-export default function NotFound() {
+const NotFound: React.FC = () => {
     return (
 
         <h1 className={styles.root}>Нет такой страницы :(</h1>
 
     )
 }
+export default NotFound;

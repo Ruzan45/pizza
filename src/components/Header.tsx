@@ -4,7 +4,7 @@ import mainLogo from '../assets/img/pizza-logo.svg'
 import { useSelector } from 'react-redux';
 import { selectCart } from '../redux/slises/cartSlice';
 
-export default function Header() {
+const Header: React.FC = () => {
   const { totalPrice, totalCart } = useSelector(selectCart);
   const { pathname } = useLocation(); //хук, позволяет в реальном времени узнать значение адресной строки
   return (
@@ -57,3 +57,4 @@ export default function Header() {
     </div>
   );
 };
+export default Header;
