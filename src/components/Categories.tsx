@@ -5,20 +5,15 @@ import { setCategoryId } from '../redux/slises/filterSlice.js'//redux
 
 type CategoriesPrors = { //типизируем пропсы
   value: number;
-  onChangeCategory: any;
+  onChangeCategory: (i: number) => void;
 };
+const categories: string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'//5
+];
 
 const Categories: React.FC/* <CategoriesPrors> */ = (/* {value, onChangeCategory}*/) => {
   const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
   const dispach = useDispatch();
-  const categories = [
-    'Все',
-    'Мясные',
-    'Вегетарианская',
-    'Гриль',
-    'Острые',
-    'Закрытые'
-  ];
+
   const onClickCategory = (id: number) => {
     dispach(setCategoryId(id))
   };
@@ -26,9 +21,9 @@ const Categories: React.FC/* <CategoriesPrors> */ = (/* {value, onChangeCategory
   return (
     <div className="categories">
       <ul>
-        {categories.map((value, i) => (
+        {categories.map((cat, i) => (
           <li key={i} onClick={() => onClickCategory(i)}
-            className={categoryId === i ? 'active' : ''}>{value}</li>
+            className={categoryId === i ? 'active' : ''}>{cat}</li>
         ))
         }
       </ul>

@@ -8,7 +8,7 @@ import styles from './Search.module.scss';
 
 const Search: React.FC = () => {
     const dispatch = useDispatch();
-    const [value, setValueSearchInput] = React.useState(''); //делаем чтобы не считывалась пустая строка через Х время
+    const [searchValue, setValueSearchInput] = React.useState(''); //делаем чтобы не считывалась пустая строка через Х время
 
     //const { setSearchValue } = React.useContext(SearchContext);
     const inputRef = React.useRef<HTMLInputElement>(null); //подобие this в JQ
@@ -26,7 +26,7 @@ const Search: React.FC = () => {
         [],
     )
 
-    const onChangeInput = (event: any) => {
+    const onChangeInput = (event: React.ChangeEvent<HTMLInputElement>) => { //типизируем event
         setValueSearchInput(event.target.value);
         updateSearchValue(event.target.value)
     }
@@ -44,13 +44,13 @@ const Search: React.FC = () => {
 
             <input
                 ref={inputRef} //подобие this в JQ
-                value={value} // контролируемый инпут
+                value={searchValue} // контролируемый инпут
                 onChange={onChangeInput} //вытаскиваем введенные в инпут данные и передаём в переменную searchValue
                 className={styles.input}
                 placeholder='Поиск пиццы...'
                 type="text" />
 
-            {value && (<svg
+            {searchValue && (<svg
                 onClick={() => (onClickClear())}
                 className={styles.clean}
                 height="512px"

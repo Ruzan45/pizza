@@ -32,19 +32,18 @@ const sortList: sortItem[] = [ // [] - указываем что это масс
 export function Sort() {
   const dispach = useDispatch();
   const sort = useSelector(selectSort);
-  const sortRef = React.useRef<HTMLDivElement>(null); //аналог this в JQ//null для TS
+  const sortRef = React.useRef<HTMLSpanElement>(null); //аналог this в JQ//null для TS
   const [opened,
     setOpened] = React.useState(false);
 
   const ClickSort = (obj: sortItem) => {
     dispach(setSort(obj)) //передаём в редакс объект
-    setOpened(false); //закрываем окно сортироваки при выборе сортировки
+    setOpened(false); //закрываем окно сортировки при выборе сортировки
   }
 
   React.useEffect(() => { //закрываем окошко при  клике вне него
-    const handleClickOutside = (event: any) => {
-      let path = event.composedPath ? event.composedPath() : event.path;
-      if (!path.includes(sortRef.current)) { //если в event не содержится тот div тогда закрывавем окошко
+    let handleClickOutside = (event: MouseEvent) => {
+      if (event.target !== sortRef.current) { //если в event не содержится span тогда закрывавем окошко
         setOpened(false);
       }
     }
@@ -55,7 +54,7 @@ export function Sort() {
   }, []);
 
   return (
-    <div ref={sortRef} className="sort">{/* sortRef ссылка на div */}
+    <div className="sort">{/* sortRef ссылка на div */}
       <div className="sort__label">
         <svg
           width="10"
@@ -68,7 +67,7 @@ export function Sort() {
             fill="#2C2C2C" />
         </svg>
         <b>Сортировка по:</b>
-        <span onClick={() => setOpened(!opened)}>{sort.name}</span>
+        <span ref={sortRef} onClick={() => setOpened(!opened)}>{sort.name}</span>
       </div>
 
       {opened && (

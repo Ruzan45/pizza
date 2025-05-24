@@ -1,5 +1,5 @@
 import React from 'react';
-import qs from "qs";//используем библиотеку qs для парсинга строки
+import qs from "qs";//используем библиотеку qs для парсинга адресной строки
 import { useSelector, useDispatch } from 'react-redux';//redux
 import { selectFilter, setCurrentPage, setFilters } from '../redux/slises/filterSlice';
 import { fetchPizzas } from '../redux/slises/pizzaSlice';
@@ -70,7 +70,6 @@ const Home: React.FC = () => {
     return (
         <><div className="container">
             <div className="content__top">
-
                 <Categories />
                 <Sort />
             </div>
