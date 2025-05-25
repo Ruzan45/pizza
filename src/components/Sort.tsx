@@ -1,15 +1,11 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSort, selectSort } from '../redux/slises/filterSlice.js'//redux
+import { setSort, selectSort } from '../redux/slises/filterSlice'//redux
+import { SortFilter } from '../redux/slises/filterSlice';
 
 
 
-type sortItem = { //объект типов для TS
-  name: string;
-  sortValue: string;
-  order: string;
-};
-const sortList: sortItem[] = [ // [] - указываем что это массив объектов
+const sortList: SortFilter[] = [ // [] - указываем что это массив объектов
   {
     name: 'популярности',
     sortValue: 'raiting',
@@ -36,7 +32,7 @@ export function Sort() {
   const [opened,
     setOpened] = React.useState(false);
 
-  const ClickSort = (obj: sortItem) => {
+  const ClickSort = (obj: SortFilter) => {
     dispach(setSort(obj)) //передаём в редакс объект
     setOpened(false); //закрываем окно сортировки при выборе сортировки
   }

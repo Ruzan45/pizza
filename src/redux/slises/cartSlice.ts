@@ -1,13 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RootState } from '../store';
 
-const initialState = {
+export type CartItemSlice = {
+    id: string;
+    title: string;
+    price: number;
+    imageUrl: string;
+    type: string[number];
+    size: number;
+    count: number;
+    ids: number;
+    itemId?: number;
+};
+
+interface CartSliseState { //interface типизирует только объект
+    totalPrice: number;
+    items: CartItemSlice[];
+    totalCart: number;
+    totalItems: number;
+}
+
+const initialState: CartSliseState = {
     totalPrice: 0,
     items: [],
     totalCart: 0, //колличество всех пицц в корзине
     totalItems: 0, //колличество групп в корзине
 
 };
-const updSummPriceCart = (state) => {
+const updSummPriceCart = (state: CartSliseState) => {
     state.totalPrice = state.items.reduce((sum, obj) => { //сумма цены товаров в корзине
         return sum + (obj.price * obj.count);
     }, 0); // 0 это начальное значение sum 
@@ -19,7 +39,7 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        addItem(state, action) {
+        addItem(state, action: PayloadAction<CartItemSlice>) {
             const index = state.items.findIndex(item => //ищем индекс добавленного варианта товара в корзине state.items
                 item.id === action.payload.id &&
                 item.type === action.payload.type &&
@@ -38,15 +58,14 @@ const cartSlice = createSlice({
 
         },
 
-        cartMinus(state, action) {
+        cartMinus(state, action: PayloadAction<number>) {
             const index = action.payload;
-            if (state.items[index].count > 1) {
-                state.items[index].count--;
-            }
+            state.items[index].count > 1 && state.items[index].count--;
+
             updSummPriceCart(state);
         },
 
-        removeItem(state, action) {
+        removeItem(state, action: PayloadAction<number>) {
             const indexRemove = state.items.findIndex(item => item.ids == action.payload);
             state.items.splice(indexRemove, 1);
             updSummPriceCart(state);
@@ -61,7 +80,7 @@ const cartSlice = createSlice({
 
 });
 
-export const selectCart = (state) => state.cart;
+export const selectCart = (state: RootState) => state.cart; //резервированная функция
 
 export const { addItem, removeItem, clearItems, cartMinus } = cartSlice.actions;
 

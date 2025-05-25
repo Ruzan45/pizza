@@ -1,8 +1,10 @@
 import React from 'react';
 import qs from "qs";//используем библиотеку qs для парсинга адресной строки
-import { useSelector, useDispatch } from 'react-redux';//redux
+import { useSelector } from 'react-redux';//redux
+import { useAppDispatch } from '../redux/store';
 import { selectFilter, setCurrentPage, setFilters } from '../redux/slises/filterSlice';
 import { fetchPizzas } from '../redux/slises/pizzaSlice';
+import { RootState } from '../redux/store';
 
 import { Link, useNavigate } from 'react-router-dom'; //useNavigate функция React routera для адресной строки
 
@@ -15,16 +17,16 @@ import Error from '../components/Error';
 
 
 const Home: React.FC = () => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const isSearch = React.useRef(false); //переменная для того чтобы не было двойного запроса при получении данных из адр. строки
     const isMounted = React.useRef(false); //переменная для того чтобы при первом рендере не вшивались фильтры в адрес. строку
 
     const { items, status } = useSelector(selectFilter); //selectFilter = (state) => state.pizzal;
-    const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
-    const sort = useSelector((state: any) => state.filterSlice.sort);
-    const currentPage = useSelector((state: any) => state.filterSlice.currentPage);
-    const searchData = useSelector((state: any) => state.filterSlice.searchData);
+    const categoryId = useSelector((state: RootState) => state.filterSlice.categoryId);
+    const sort = useSelector((state: RootState) => state.filterSlice.sort);
+    const currentPage = useSelector((state: RootState) => state.filterSlice.currentPage);
+    const searchData = useSelector((state: RootState) => state.filterSlice.searchData);
 
 
     const onChangePage = (page: number) => {
@@ -33,7 +35,7 @@ const Home: React.FC = () => {
 
     React.useEffect(() => { //полуаем фильтры из адресной строки и парсим их
         if (window.location.search) { //если ы адресной строке есть что-то кроме домена
-            const params = qs.parse(window.location.search.substring(1)); //используем библиотеку qs для парсинга
+            const params: any = qs.parse(window.location.search.substring(1)); //используем библиотеку qs для парсинга
             /* const sort = sortList.find((obj) => obj.sort === params.sort); */
             dispatch(
                 setFilters({

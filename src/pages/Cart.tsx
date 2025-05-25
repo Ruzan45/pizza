@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty'
 import { clearItems } from '../redux/slises/cartSlice';
+import { CartItemSlice } from '../redux/slises/cartSlice';
 
 const Cart: React.FC = () => {
     const dispatch = useDispatch();
@@ -40,7 +41,7 @@ const Cart: React.FC = () => {
                 </div>
                 <div className="content__items">
                     {
-                        items.map((item: any, i: number) =>
+                        items.map((item: CartItemSlice, i: number) =>
                             (<CartItem key={i} itemId={i} {...item} />)
                         )
                     }

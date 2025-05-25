@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addItem } from '../../redux/slises/cartSlice';
+import { addItem, CartItemSlice } from '../../redux/slises/cartSlice';
 import { Link } from 'react-router';
 
 const typeNames = ['тонкое', 'традиционное', 'домашнее']; // решение Арчакова. Статичный массив имеет точно такие же индексы, какие нам присылаются в массиве types
@@ -25,13 +25,15 @@ const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, 
   const [activeSize, setIndexSize] = React.useState<number>(0);
   const [activeType, setType] = React.useState<number>(0);
   const onClickAdd = () => {
-    const item = {
+    const item: CartItemSlice = {
       id,
       title,
       price,
       imageUrl,
       type: typeNames[activeType],
       size: sizes[activeSize],
+      count: 0,
+      ids: 0,
     }
 
     dispatch(addItem(item));

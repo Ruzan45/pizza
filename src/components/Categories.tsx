@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';//redux
-import { setCategoryId } from '../redux/slises/filterSlice.js'//redux
+import { setCategoryId } from '../redux/slises/filterSlice'//redux
 
 type CategoriesPrors = { //типизируем пропсы
   value: number;
@@ -10,7 +10,7 @@ type CategoriesPrors = { //типизируем пропсы
 const categories: string[] = ['Все', 'Мясные', 'Вегетарианская', 'Гриль', 'Острые', 'Закрытые'//5
 ];
 
-const Categories: React.FC/* <CategoriesPrors> */ = (/* {value, onChangeCategory}*/) => {
+const Categories: React.FC = () => {
   const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
   const dispach = useDispatch();
 
