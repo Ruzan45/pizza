@@ -20,25 +20,30 @@ interface CartSliseState { //interface типизирует только объ�
     totalItems: number;
 }
 
+const data = localStorage.getItem('cart');
 const initialState: CartSliseState = {
     totalPrice: 0,
-    items: [],
+    items: data ? JSON.parse(data) : [],
     totalCart: 0, //колличество всех пицц в корзине
     totalItems: 0, //колличество групп в корзине
 
 };
+
 const updSummPriceCart = (state: CartSliseState) => {
+
     state.totalPrice = state.items.reduce((sum, obj) => { //сумма цены товаров в корзине
         return sum + (obj.price * obj.count);
     }, 0); // 0 это начальное значение sum 
     state.totalCart = state.items.reduce((sum, obj) => { //сумма количества товаров в корзине
         return obj.count + sum;
     }, 0); // 0 это начальное значение sum 
+
 }
 const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
+
         addItem(state, action: PayloadAction<CartItemSlice>) {
             const index = state.items.findIndex(item => //ищем индекс добавленного варианта товара в корзине state.items
                 item.id === action.payload.id &&
@@ -76,12 +81,15 @@ const cartSlice = createSlice({
             state.totalPrice = 0;
             state.totalCart = 0;
         },
+        updSumm(state) {
+            updSummPriceCart(state);
+        }
     }
 
 });
 
 export const selectCart = (state: RootState) => state.cart; //резервированная функция
 
-export const { addItem, removeItem, clearItems, cartMinus } = cartSlice.actions;
+export const { addItem, removeItem, clearItems, cartMinus, updSumm } = cartSlice.actions;
 
 export default cartSlice.reducer;

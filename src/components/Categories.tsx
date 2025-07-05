@@ -1,4 +1,5 @@
 import React from 'react';
+import { useWhyDidYouUpdate } from 'ahooks'
 
 import { useSelector, useDispatch } from 'react-redux';//redux
 import { setCategoryId } from '../redux/slises/filterSlice'//redux
@@ -14,9 +15,9 @@ const Categories: React.FC = () => {
   const categoryId = useSelector((state: any) => state.filterSlice.categoryId);
   const dispach = useDispatch();
 
-  const onClickCategory = (id: number) => {
+  const onClickCategory = React.useCallback((id: number) => {
     dispach(setCategoryId(id))
-  };
+  }, []);
 
   return (
     <div className="categories">

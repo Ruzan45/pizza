@@ -1,12 +1,30 @@
+import React from 'react'
 import { Link, useLocation } from 'react-router';
 import Search from './Search/Search';
 import mainLogo from '../assets/img/pizza-logo.svg'
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../redux/store';
 import { selectCart } from '../redux/slises/cartSlice';
+import { updSumm } from '../redux/slises/cartSlice';
 
 const Header: React.FC = () => {
-  const { totalPrice, totalCart } = useSelector(selectCart);
+  const { totalPrice, totalCart, items } = useSelector((state: RootState) => state.cart);
   const { pathname } = useLocation(); //хук, позволяет в реальном времени узнать значение адресной строки
+  const dispatch = useDispatch();
+
+  const isMounted = React.useRef(false); //
+
+  React.useEffect(() => {
+    if (isMounted.current) {
+      window.localStorage.setItem('cart', JSON.stringify(items));
+    }
+    isMounted.current = true;
+  }, [items]);
+  React.useEffect(() => {
+    dispatch(updSumm()) // обновлем данные о корзине из LS если они там есть при первой загрузке
+  }, [])
+
+
   return (
     <div className="header">
       <div className="container">

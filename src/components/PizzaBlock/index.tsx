@@ -14,13 +14,11 @@ type PizzaBlockProps = {
   types: number[];
   id: string;
 };
-
 const PizzaBlock: React.FC<PizzaBlockProps> = ({ title, price, imageUrl, sizes, types, id }) => {
   const dispatch = useDispatch();
   const cartCount = useSelector((state: any) => state.cart.items.filter(function (obj: any) { return obj.id === id })).reduce((sum: number, obj: any) => {
     return obj.count + sum;
   }, 0); // 0 это начальное значение sum ;
-
 
   const [activeSize, setIndexSize] = React.useState<number>(0);
   const [activeType, setType] = React.useState<number>(0);
